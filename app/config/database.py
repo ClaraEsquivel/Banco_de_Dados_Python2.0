@@ -17,15 +17,16 @@ db = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=db)
 session = Session()
 
+
 # Gerenciando sessão
 @contextmanager
 def get_db():
     db = Session()
     try:
         yield db
-        db.commit # se der certo, faz commit
+        db.commit  # se der certo, faz commit
     except Exception as erro:
-        db.rollback() # se der errado, desfaz a operação. 
-        raise erro # lança a exceção, informando o erro.
+        db.rollback()  # se der errado, desfaz a operação.
+        raise erro  # lança a exceção, informando o erro.
     finally:
-        db.close() # garante o fechamento da sessão.
+        db.close()  # garante o fechamento da sessão.

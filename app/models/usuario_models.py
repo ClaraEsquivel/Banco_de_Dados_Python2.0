@@ -4,6 +4,7 @@ from config.database import db
 
 Base = declarative_base()
 
+
 class Usuario(Base):
     __tablename__ = "usuarios"
 
@@ -12,11 +13,11 @@ class Usuario(Base):
     email = Column(String(150))
     senha = Column(String(150))
 
-    
     def __init__(self, nome: str, email: str, senha: str):
         self.nome = nome
         self.email = email
         self.senha = senha
 
+
 # Criando tabela no banco de dados
-Base.metadata.create_all(bind=db)        
+Base.metadata.create_all(bind=db)
