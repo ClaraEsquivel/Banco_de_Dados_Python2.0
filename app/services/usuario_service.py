@@ -1,10 +1,11 @@
-from models.usuario_models import Usuario
-from repositories.usuario_repository import UsuarioRepository
+from app.models.usuario_models import Usuario
+from app.repositories.usuario_repository import UsuarioRepository
 
 
 class UsuarioService:
     def __init__(self, repository: UsuarioRepository):
         self.repository = repository
+
 
     def criar_usuario(self, nome: str, email: str, senha: str):
         try:
@@ -28,6 +29,27 @@ class UsuarioService:
         return self.repository.listar_usuarios()
 
 
+
+    def pesquisar_usuario_por_email(self):
+        try:
+            print("\n= Consultando os dados de apenas um usuário =")
+
+            email = input("Digite o email do usuário: ")
+
+            usuario = self.repository.pesquisar_usuario_por_email(email=email)
+
+            if usuario:
+                    print(f"Nome: {usuario.nome} - Email: {usuario.email} - Senha: {usuario.senha}")
+            else:
+                    print("Usuário não encontrado")
+
+        except TypeError as erro:
+            print(f"Erro ao pesquisar o usuário: {erro}")
+        except Exception as erro:
+            print(f"Ocorreu um erro inesperado: {erro}")        
+
+
+
     def atualizar_usuario(self):
         try:
             print("\n= Atualizando os dados de um usuário =")
@@ -37,11 +59,11 @@ class UsuarioService:
             usuario_cadastrado = self.repository.pesquisar_usuario_por_email(email=email)
 
             if usuario_cadastrado:
-                usuario_cadastrado.nome = input("Digite seu nome: ")
-                usuario_cadastrado.email = input("Digite seu novo email:")
-                usuario_cadastrado.senha = input("Digite sua nova senha: ")
-                self.repository.atualizar_usuario(usuario_cadastrado)
-                print("usuário atualizado com sucesso!")
+                usuario_cadastrado.nome = input("Digite o novo nome: ")
+                usuario_cadastrado.email = input("Digite o novo email:")
+                usuario_cadastrado.senha = input("Digite a nova senha: ")
+               
+                print("Usuário atualizado com sucesso!")
             else:
                 print("Usuário não encontrado")
 
@@ -49,3 +71,32 @@ class UsuarioService:
             print(f"Erro ao atualizar o usuário: {erro}")
         except Exception as erro:
             print(f"Ocorreu um erro inesperado: {erro}")                     
+
+
+    def excluir_usuario(self):
+        try:
+            print("\n= Excluindo os dados de um usuário =")
+
+            email = input("Digite o email do usuário que será excluído: ")
+
+            usuario = self.repository.pesquisar_usuario_por_email(email=email)
+
+            if usuario:
+                self.repository.excluir_usuario(usuario)
+                print(f"Usuário {usuario.nome} excluido com sucesso!")
+            else:
+                print("Usuário não encontrado")
+        
+        except TypeError as erro:
+            print(f"Erro ao excluir o usuário: {erro}")
+        except Exception as erro:
+            print(f"Ocorreu um erro inesperado: {erro}")   
+
+
+    def listar_usuarios(self):       
+        lista_usuarios = self.repository.listar_usuarios()
+        print("\n= Listando usuários cadastrados =")
+        for usuario in lista_usuarios:
+            print(
+                f"Nome: {usuario.nome} - Email: {usuario.email} - Senha: {usuario.senha}"
+                )

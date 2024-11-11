@@ -1,4 +1,5 @@
 sqlalchemy
 pymysql
+pytest
 
 #Instala  -> pip install -r requirements.txt
